@@ -1,7 +1,6 @@
 "use server";
 
 import fs from "fs/promises";
-import path from "path";
 
 // 1. Define strict types for your API response
 export interface AnalyticsDataPoint {
