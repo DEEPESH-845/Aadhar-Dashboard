@@ -31,31 +31,46 @@ interface RevenueChartProps {
 // Custom Tooltip for that "Premium" look
 const CustomTooltip: React.FC<TooltipProps<number,string>> = ({ active, payload, label } ) => {
 	if (active && payload && payload.length) {
-        const revenueData = payload[0];
-				const visitorsData = payload[1];
+		const workforceData = payload.find(p => p.dataKey === "revenue");
+		const studentData = payload.find(p => p.dataKey === "visitors");
+		const total = (workforceData?.value as number || 0) + (studentData?.value as number || 0);
 
 		return (
-			<div className="rounded-lg border bg-background/95 p-3 shadow-xl backdrop-blur-md">
+			<div className="rounded-lg border bg-background/95 p-3 shadow-xl backdrop-blur-md min-w-[200px]">
 				<p className="mb-2 text-xs font-medium text-muted-foreground">
 					{new Date(label).toLocaleDateString("en-US", {
+						weekday: "short",
 						month: "short",
 						day: "numeric",
 					})}
 				</p>
-				<div className="flex flex-col gap-1">
-					<div className="flex items-center gap-2">
-						<div className="h-2 w-2 rounded-full bg-primary" />
-						<span className="text-sm font-bold text-foreground">
-							${revenueData.value?.toLocaleString() ?? 0}
+				<div className="flex flex-col gap-2">
+					{/* Workforce Verifications (Age 17+) */}
+					<div className="flex items-center justify-between gap-4">
+						<div className="flex items-center gap-2">
+							<div className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
+							<span className="text-xs text-muted-foreground">Workforce Verifications</span>
+						</div>
+						<span className="text-sm font-bold text-foreground tabular-nums">
+							{workforceData?.value?.toLocaleString() ?? 0}
 						</span>
-						<span className="text-xs text-muted-foreground">Revenue</span>
 					</div>
-					<div className="flex items-center gap-2">
-						<div className="h-2 w-2 rounded-full bg-blue-400" />
-						<span className="text-sm font-bold text-foreground">
-							{visitorsData.value?.toLocaleString() ?? 0}
+					{/* Student Enrollments (Age 5-17) */}
+					<div className="flex items-center justify-between gap-4">
+						<div className="flex items-center gap-2">
+							<div className="h-2.5 w-2.5 rounded-full bg-blue-500" />
+							<span className="text-xs text-muted-foreground">Student Enrollments</span>
+						</div>
+						<span className="text-sm font-bold text-foreground tabular-nums">
+							{studentData?.value?.toLocaleString() ?? 0}
 						</span>
-						<span className="text-xs text-muted-foreground">Visitors</span>
+					</div>
+					{/* Total */}
+					<div className="border-t pt-2 mt-1 flex items-center justify-between gap-4">
+						<span className="text-xs font-medium text-muted-foreground">Total Biometrics</span>
+						<span className="text-sm font-bold text-foreground tabular-nums">
+							{total.toLocaleString()}
+						</span>
 					</div>
 				</div>
 			</div>
@@ -97,50 +112,49 @@ export function RevenueChart({
 			<CardHeader>
 				<div className="flex items-center justify-between">
 					<div>
-						<CardTitle>Revenue Overview</CardTitle>
+						<CardTitle>Biometric Update Analytics</CardTitle>
 						<CardDescription>
-							Performance over the last{" "}
+							Workforce vs Student biometric registrations over the last{" "}
 							{selectedRange === "7d"
-								? "Week"
+								? "7 days"
 								: selectedRange === "30d"
-									? "Month"
-									: "Quarter"}
+									? "30 days"
+									: "90 days"}
 						</CardDescription>
 					</div>
 					<Badge
 						variant={growth > 0 ? "default" : "destructive"}
 						className="text-xs"
 					>
-						{growth > 0 ? "+" : ""}
-						{growth}% vs prev period
+						{growth > 0 ? "↑" : "↓"} {Math.abs(growth)}% vs prev period
 					</Badge>
 				</div>
 			</CardHeader>
-			<CardContent className="pl-0">
-				<div className="h-[300px] w-full">
+			<CardContent className="pl-0 pr-4">
+				<div className="h-[420px] w-full">
 					<ResponsiveContainer width="100%" height="100%">
 						<AreaChart
 							data={formattedData}
-							margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+							margin={{ top: 20, right: 30, left: 10, bottom: 10 }}
 						>
 							<defs>
-								{/* Gradient for Revenue */}
+								{/* Gradient for Workforce (Age 17+) - Emerald Green */}
 								<linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
 									<stop
 										offset="5%"
-										stopColor="hsl(var(--primary))"
-										stopOpacity={0.3}
+										stopColor="#10b981"
+										stopOpacity={0.4}
 									/>
 									<stop
 										offset="95%"
-										stopColor="hsl(var(--primary))"
-										stopOpacity={0}
+										stopColor="#10b981"
+										stopOpacity={0.05}
 									/>
 								</linearGradient>
-								{/* Gradient for Visitors */}
+								{/* Gradient for Students (Age 5-17) - Blue */}
 								<linearGradient id="colorVisitors" x1="0" y1="0" x2="0" y2="1">
-									<stop offset="5%" stopColor="#60a5fa" stopOpacity={0.3} />
-									<stop offset="95%" stopColor="#60a5fa" stopOpacity={0} />
+									<stop offset="5%" stopColor="#3b82f6" stopOpacity={0.4} />
+									<stop offset="95%" stopColor="#3b82f6" stopOpacity={0.05} />
 								</linearGradient>
 							</defs>
 
@@ -163,7 +177,7 @@ export function RevenueChart({
 								fontSize={12}
 								tickLine={false}
 								axisLine={false}
-								tickFormatter={(value) => `$${value}`}
+								tickFormatter={(value) => `${value}`}
 							/>
 
 							<Tooltip
@@ -174,16 +188,16 @@ export function RevenueChart({
 							<Area
 								type="monotone"
 								dataKey="visitors"
-								stroke="#60a5fa"
-								strokeWidth={2}
+								stroke="#3b82f6"
+								strokeWidth={2.5}
 								fillOpacity={1}
 								fill="url(#colorVisitors)"
 							/>
 							<Area
 								type="monotone"
 								dataKey="revenue"
-								stroke="hsl(var(--primary))"
-								strokeWidth={2}
+								stroke="#10b981"
+								strokeWidth={2.5}
 								fillOpacity={1}
 								fill="url(#colorRevenue)"
 								activeDot={{ r: 6, strokeWidth: 0 }}

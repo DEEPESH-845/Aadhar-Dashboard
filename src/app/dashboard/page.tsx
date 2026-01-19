@@ -10,8 +10,15 @@ import {
 
 import data from "./data.json"
 import { AnalyticsContainer } from "@/components/AnalyticContainer"
+import { fetchAnalyticsData } from "@/lib/api/analytics"
 
-export default function Page() {
+export default async function Page() {
+  // Fetch initial summary data for the cards (defaulting to 90d overview)
+  const analyticsData = await fetchAnalyticsData("90d");
+  const total5to17 = analyticsData.data.reduce((acc, curr) => acc + curr.visitors, 0);
+  const total17plus = analyticsData.data.reduce((acc, curr) => acc + curr.revenue, 0);
+  const totalRecords = total5to17 + total17plus;
+
   return (
 		<SidebarProvider
 			style={
@@ -27,7 +34,12 @@ export default function Page() {
 				<div className="flex flex-1 flex-col">
 					<div className="@container/main flex flex-1 flex-col gap-2">
 						<div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-							<SectionCards />
+							<SectionCards 
+                totalRecords={totalRecords}
+                age5to17={total5to17}
+                age17plus={total17plus}
+                growth={analyticsData.summary.growth}
+              />
 							<div className="px-4 lg:px-6">
 								<ChartAreaInteractive />
                 <AnalyticsContainer />
