@@ -3,6 +3,9 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --sidebar-width: 16rem;
+  --sidebar-width-mobile: 20rem;
+  --sidebar-width-icon: 3rem;
 }
 
 @theme inline {
@@ -58,7 +61,7 @@ body {
   --primary: var(--color-neutral-600);
   --primary-foreground: var(--color-neutral-50);
 
-  @variant dark {
+  .dark & {
     --primary: var(--color-neutral-500);
     --primary-foreground: var(--color-neutral-50);
   }
@@ -69,7 +72,7 @@ body {
   --primary: var(--color-blue-600);
   --primary-foreground: var(--color-blue-50);
 
-  @variant dark {
+  .dark & {
     --primary: var(--color-blue-500);
     --primary-foreground: var(--color-blue-50);
   }
@@ -80,7 +83,7 @@ body {
   --primary: var(--color-lime-600);
   --primary-foreground: var(--color-lime-50);
 
-  @variant dark {
+.dark & {
     --primary: var(--color-lime-600);
     --primary-foreground: var(--color-lime-50);
   }
@@ -91,7 +94,7 @@ body {
   --primary: var(--color-amber-600);
   --primary-foreground: var(--color-amber-50);
 
-  @variant dark {
+.dark & {
     --primary: var(--color-amber-500);
     --primary-foreground: var(--color-amber-50);
   }
@@ -103,7 +106,7 @@ body {
   --primary: var(--color-neutral-600);
   --primary-foreground: var(--color-neutral-50);
 
-  @variant dark {
+  .dark & {
     --primary: var(--color-neutral-500);
     --primary-foreground: var(--color-neutral-50);
   }
