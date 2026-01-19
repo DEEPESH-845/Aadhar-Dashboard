@@ -1,6 +1,7 @@
 "use server";
 
 import fs from "fs/promises";
+import path from "path";
 
 // 1. Define strict types for your API response
 export interface AnalyticsDataPoint {
@@ -21,7 +22,7 @@ export interface AnalyticsResponse {
 // 2. Real Data Fetching from CSV
 export async function fetchAnalyticsData(range: '7d' | '30d' | '90d'): Promise<AnalyticsResponse> {
   try {
-    const filePath = "/Users/deepesh/documents/Dashboard/excelFILES/api_data_aadhar_demographic_1500000_2000000.csv";
+    const filePath = path.join(process.cwd(), "excelFILES", "api_data_aadhar_demographic_1500000_2000000.csv");
     const fileContent = await fs.readFile(filePath, "utf-8");
     
     // Parse CSV
