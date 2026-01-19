@@ -22,7 +22,7 @@ export interface AnalyticsResponse {
 // 2. Real Data Fetching from CSV
 export async function fetchAnalyticsData(range: '7d' | '30d' | '90d'): Promise<AnalyticsResponse> {
   try {
-    const filePath = "/Users/akarsh/Aadhar-Dashboard/excelFILES/api_data_aadhar_demographic_1500000_2000000.csv";
+    const filePath = "/Users/deepesh/documents/Dashboard/excelFILES/api_data_aadhar_demographic_1500000_2000000.csv";
     const fileContent = await fs.readFile(filePath, "utf-8");
     
     // Parse CSV
