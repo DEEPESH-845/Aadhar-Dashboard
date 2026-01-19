@@ -39,12 +39,8 @@ export async function fetchAnalyticsData(range: '7d' | '30d' | '90d'): Promise<A
       if (columns.length < 5) return;
 
       const dateStr = columns[0].trim(); // DD-MM-YYYY
-      let district = columns[2]?.trim() || "";
       const age5to17 = parseInt(columns[4]?.trim() || "0", 10);
       const age17plus = parseInt(columns[5]?.trim() || "0", 10);
-
-      // Clean district name (remove *)
-      district = district.replace(/\s*\*/g, "");
 
       // Parse date DD-MM-YYYY
       const [day, month, year] = dateStr.split("-").map(Number);
