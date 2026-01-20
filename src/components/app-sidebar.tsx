@@ -12,7 +12,6 @@ import {
 	IconFileWord,
 	IconFolder,
 	IconHelp,
-	IconInnerShadowTop,
 	IconListDetails,
 	IconReport,
 	IconSearch,
@@ -169,7 +168,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 										height={100}
 										priority
 										className="size-full object-cover"
-										style={{ mixBlendMode: "screen"}}
+										style={{ mixBlendMode: "screen" }}
 									/>
 								</div>
 							</a>
