@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import * as React from "react";
 import {
 	IconCamera,
@@ -158,12 +159,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 			<SidebarHeader>
 				<SidebarMenu>
 					<SidebarMenuItem>
-						<SidebarMenuButton
-							asChild
-						>
+						<SidebarMenuButton size="lg" asChild>
 							<a href="#">
-								<IconInnerShadowTop className="size-5" />
-								<span className="text-base font-semibold"> Dashboard </span>
+								<div className="flex aspect-square size-17 items-center justify-center overflow-hidden rounded-full bg-[#020202] text-sidebar-primary-foreground shadow-[0_12px_24px_rgba(0,0,0,0.25)]">
+									<Image
+										src="/aadhar.jpg"
+										alt="Aadhaar Logo"
+										width={100}
+										height={100}
+										priority
+										className="size-full object-cover"
+										style={{ mixBlendMode: "screen"}}
+									/>
+								</div>
 							</a>
 						</SidebarMenuButton>
 					</SidebarMenuItem>
